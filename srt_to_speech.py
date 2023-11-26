@@ -44,7 +44,7 @@ def speed_up_audio(input_path: str, period_start: int, period_end: int, fade_dur
     sped_up_audio = sped_up_audio.fade_in(duration=fade_duration).fade_out(duration=fade_duration)
     sped_up_audio.export(input_path, format="wav")
 
-def srt_to_speech(srt_file: str, language: str = 'en') -> None:
+def srt_to_speech(srt_file: str, output_file: str, language: str = 'en') -> None:
     my_srt = open(srt_file, 'r', encoding='utf-8').read()
     pattern = re.compile(r"(\d+)\n(\d+:\d+:\d+,\d+ --> \d+:\d+:\d+,\d+)\s+(.+)")
     matches = pattern.findall(my_srt)
@@ -64,18 +64,19 @@ def srt_to_speech(srt_file: str, language: str = 'en') -> None:
             delay(f"{number}.wav", period_start - prev_period_end)
 
     numbers_list = [f'{match[0]}.wav' for match in matches]
-    merge_wavs(numbers_list, 'final.wav')
+    merge_wavs(numbers_list, output_file)
     [os.remove(i) for i in numbers_list]
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Convert SRT file to speech.')
     parser.add_argument('srt_file', type=str, help='Path to the SRT file')
+    parser.add_argument('output_filename', type=str, help='Output wav filename')
     parser.add_argument('language', type=str, help='Language code for text-to-speech')
     return parser.parse_args()
 
 def main():
     args = parse_args()
-    srt_to_speech(args.srt_file, args.language)
+    srt_to_speech(args.srt_file, args.output_filename, args.language)
 
 if __name__ == "__main__":
     main()
