@@ -27,14 +27,15 @@ This Python script leverages the gTTS API to transform SRT (SubRip Subtitle) fil
 Run the script with the following command:
 
 ```bash
-python3 srt_to_speech.py srt_file language_code
+python3 srt_to_speech.py srt_file output_file language_code
 ```
 
 ### Options
     srt_file: Path to the SRT file.
+    output_file: Output filename.
     language_code: Language code for text-to-speech.
 
 ## Example
 ```bash
-python3 srt_to_speech.py example.srt en
+python3 srt_to_speech.py example.srt output.wav en
 ```
